@@ -1,16 +1,24 @@
 package com.kata.bowling;
 
+import java.util.ArrayList;
+
 /**
  * Created by user on 2/4/16.
  */
 public class Game {
-    private int score = 0;
+    private ArrayList<Integer> rolls = new ArrayList<Integer>();
+
     public int score(){
 
-        return score;
+        Integer totalScore = rolls
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        return totalScore.intValue();
     }
 
     public void roll(int pins){
-        score += pins;
+        rolls.add(new Integer(pins));
     }
 }
