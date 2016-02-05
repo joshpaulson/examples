@@ -28,8 +28,21 @@ public class Game {
         int extraScore = 0;
 
         for (int i = 0; i < secondInFrameRolls.size(); i++) {
-            if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 &&
+
+            if (firstInFrameRolls.get(i) == 10){
+
+                // Strike
+                if (firstInFrameRolls.get(i+1) != null &&
+                        secondInFrameRolls.get(i+1) != null ){
+
+                    extraScore += ( firstInFrameRolls.get(i+1) +
+                                       secondInFrameRolls.get(i+1)  ) ;
+                }
+
+            } else if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 &&
                     firstInFrameRolls.get(i + 1) != null) {
+
+                // Spare
                 extraScore += firstInFrameRolls.get(i + 1);
             }
         }
@@ -41,6 +54,11 @@ public class Game {
 
         if (rolls.size() % 2 == 1 ){
             firstInFrameRolls.add(new Integer(pins));
+
+            if (pins == 10){
+                secondInFrameRolls.add(new Integer(0));
+                rolls.add(new Integer(0));
+            }
         } else {
             secondInFrameRolls.add(new Integer(pins));
         }

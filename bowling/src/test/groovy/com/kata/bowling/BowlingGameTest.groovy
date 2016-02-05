@@ -47,5 +47,18 @@ class BowlingGameTest extends Specification{
             game.score() == 16
     }
 
+    def "Does One Strike Followed by a 3 then 4 frame and 16 gutter balls score 24?"() {
+        setup:
+            Game game = new Game()
+            game.roll(10)
+            game.roll(3)
+            game.roll(4)
+
+            16.times{
+                game.roll(0)
+            }
+        expect:
+            game.score() == 24
+    }
 
 }
