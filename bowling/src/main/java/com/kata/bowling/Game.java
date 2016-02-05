@@ -50,6 +50,15 @@ public class Game {
             extra = ( firstInFrameRolls.get(frame+1) +
                     secondInFrameRolls.get(frame+1)  ) ;
 
+            if( isStrike( frame+1 ) ){
+                if (firstInFrameRolls.size() > frame +2) {
+                    extra += firstInFrameRolls.get(frame+2) ;
+                }
+                if (secondInFrameRolls.size() > frame +2) {
+                    extra += secondInFrameRolls.get(frame+2);
+                }
+            }
+
         }
 
         return extra;
@@ -82,6 +91,7 @@ public class Game {
         return firstInFrameRolls.get(frame) +
                 secondInFrameRolls.get(frame) == 10;
     }
+
 
     public void roll(int pins){
         rolls.add(new Integer(pins));

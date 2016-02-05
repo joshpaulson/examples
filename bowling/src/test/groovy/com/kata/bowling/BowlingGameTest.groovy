@@ -61,17 +61,16 @@ class BowlingGameTest extends Specification{
             game.score() == 24
     }
 
-//    def "Does a perfect game score 300?"() {
-//        setup:
-//            Game game = new Game()
-//            12.times{
-//                game.roll(10)
-//            }
-//            //game.roll(9)
-//            //game.roll(0)
-//
-//        expect:
-//            game.score() == 300
-//    }
+    def "Does a perfect game score 300?"() {
+        setup:
+            Game game = new Game()
+            11.times{
+                game.roll(10)
+            }
+
+        expect:
+            game.score() == 300
+    }
+
 
 }
