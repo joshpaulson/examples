@@ -15,13 +15,23 @@ class BowlingGameTest extends Specification{
 
     def "Does a Gutter Game Work?"() {
         setup:
-            Game game = new Game();
-            10.times {
-                game.roll(0);
+            Game game = new Game()
+            20.times {
+                game.roll(0)
             }
 
         expect:
-            game.score() == 0;
+            game.score() == 0
+    }
+
+    def "Do 20 single pin frames score 20?"(){
+        setup:
+            Game game = new Game()
+            20.times {
+                game.roll(1)
+            }
+        expect:
+            game.score() == 20
     }
 
 
