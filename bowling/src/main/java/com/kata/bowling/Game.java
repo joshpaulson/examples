@@ -32,21 +32,38 @@ public class Game {
             if (firstInFrameRolls.get(i) == 10){
 
                 // Strike
-                if (firstInFrameRolls.get(i+1) != null &&
-                        secondInFrameRolls.get(i+1) != null ){
+                extraScore += extraScoreForStrikeInFrame( i );
 
-                    extraScore += ( firstInFrameRolls.get(i+1) +
-                                       secondInFrameRolls.get(i+1)  ) ;
-                }
-
-            } else if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 &&
-                    firstInFrameRolls.get(i + 1) != null) {
+            } else if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 ) {
 
                 // Spare
-                extraScore += firstInFrameRolls.get(i + 1);
+                extraScore += extraScoreForSpareInFrame(i);
             }
         }
         return extraScore;
+    }
+
+    private int extraScoreForStrikeInFrame( int frame ){
+        int extra = 0;
+
+        if (firstInFrameRolls.size() > frame+1  &&
+                secondInFrameRolls.size() > frame+1 ){
+
+            extra = ( firstInFrameRolls.get(frame+1) +
+                    secondInFrameRolls.get(frame+1)  ) ;
+        }
+        
+        return extra;
+    }
+
+
+    private int extraScoreForSpareInFrame( int frame ) {
+        int extra = 0;
+
+        if ( firstInFrameRolls.size() > frame + 1) {
+            extra = firstInFrameRolls.get(frame + 1);
+        }
+        return extra;
     }
 
     public void roll(int pins){
