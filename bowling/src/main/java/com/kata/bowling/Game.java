@@ -19,15 +19,21 @@ public class Game {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        for (int i = 0; i< secondInFrameRolls.size(); i++){
-            if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) ==10 &&
-                    firstInFrameRolls.get(i+1) != null) {
-                totalScore += firstInFrameRolls.get(i+1);
-            }
-        }
-
+        totalScore += extraScoreForStrikesAndSpares();
 
         return totalScore.intValue();
+    }
+
+    private int extraScoreForStrikesAndSpares() {
+        int extraScore = 0;
+
+        for (int i = 0; i < secondInFrameRolls.size(); i++) {
+            if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 &&
+                    firstInFrameRolls.get(i + 1) != null) {
+                extraScore += firstInFrameRolls.get(i + 1);
+            }
+        }
+        return extraScore;
     }
 
     public void roll(int pins){
