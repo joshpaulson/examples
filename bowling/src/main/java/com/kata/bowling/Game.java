@@ -29,14 +29,12 @@ public class Game {
 
         for (int i = 0; i < secondInFrameRolls.size(); i++) {
 
-            if (firstInFrameRolls.get(i) == 10){
+            if (isStrike(i) ){
 
-                // Strike
                 extraScore += extraScoreForStrikeInFrame( i );
 
-            } else if (firstInFrameRolls.get(i) + secondInFrameRolls.get(i) == 10 ) {
+            } else if ( isSpare(i) ) {
 
-                // Spare
                 extraScore += extraScoreForSpareInFrame(i);
             }
         }
@@ -51,11 +49,11 @@ public class Game {
 
             extra = ( firstInFrameRolls.get(frame+1) +
                     secondInFrameRolls.get(frame+1)  ) ;
+
         }
-        
+
         return extra;
     }
-
 
     private int extraScoreForSpareInFrame( int frame ) {
         int extra = 0;
@@ -64,6 +62,25 @@ public class Game {
             extra = firstInFrameRolls.get(frame + 1);
         }
         return extra;
+    }
+
+    private boolean isStrike( int frame){
+
+        if (!( firstInFrameRolls.size() > frame) ) {
+            return false;
+        }
+
+        return firstInFrameRolls.get(frame) == 10;
+    }
+    private boolean isSpare( int frame){
+
+        if (!( firstInFrameRolls.size() > frame) ||
+                !( secondInFrameRolls.size() > frame) ) {
+            return false;
+        }
+
+        return firstInFrameRolls.get(frame) +
+                secondInFrameRolls.get(frame) == 10;
     }
 
     public void roll(int pins){
