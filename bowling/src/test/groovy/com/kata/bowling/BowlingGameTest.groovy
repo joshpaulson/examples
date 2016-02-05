@@ -34,18 +34,18 @@ class BowlingGameTest extends Specification{
             game.score() == 20
     }
 
-//    def "Does One Spare then 3 pins then 17 gutter ball frames score 16?"() {
-//        setup:
-//            Game game = new Game()
-//            game.roll(5)
-//            game.roll(5)
-//            game.roll(3)
-//            17.times{
-//                game.roll(0)
-//            }
-//        expect:
-//            game.score() == 16
-//    }
+    def "Does One Spare then 3 pins then 17 gutter ball frames score 16?"() {
+        setup:
+            Game game = new Game()
+            game.roll(5)
+            game.roll(5)
+            game.roll(3)
+            17.times{
+                game.roll(0)
+            }
+        expect:
+            game.score() == 16
+    }
 
 
 }
