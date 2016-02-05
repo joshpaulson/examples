@@ -45,22 +45,31 @@ public class Game {
         int extra = 0;
 
         if (firstInFrameRolls.size() > frame+1  &&
-                secondInFrameRolls.size() > frame+1 ){
+                secondInFrameRolls.size() > frame+1 ) {
 
-            extra = ( firstInFrameRolls.get(frame+1) +
-                    secondInFrameRolls.get(frame+1)  ) ;
+            extra = (firstInFrameRolls.get(frame + 1) +
+                    secondInFrameRolls.get(frame + 1));
 
-            if( isStrike( frame+1 ) ){
-                if (firstInFrameRolls.size() > frame +2) {
-                    extra += firstInFrameRolls.get(frame+2) ;
+            if (isStrike(frame + 1)) {
+                if (firstInFrameRolls.size() > frame + 2) {
+                    extra += firstInFrameRolls.get(frame + 2);
                 }
-                if (secondInFrameRolls.size() > frame +2) {
-                    extra += secondInFrameRolls.get(frame+2);
+                if (secondInFrameRolls.size() > frame + 2) {
+                    extra += secondInFrameRolls.get(frame + 2);
                 }
             }
-
+            else {
+                if (isSpare(frame + 1)) {
+                    if (firstInFrameRolls.size() > frame + 2) {
+                        extra += firstInFrameRolls.get(frame + 2);
+                    }
+                }
+            }
         }
 
+        if (extra >10 ){
+            return 10;
+        }
         return extra;
     }
 
