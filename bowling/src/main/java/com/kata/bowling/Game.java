@@ -47,6 +47,9 @@ public class Game {
         int extraScore = 0;
 
         if (isStrike(frame) && isFrameCalculated(frame +1)){
+            if (isSpare( frame +1)){
+                return 10;
+            }
             extraScore += calculatedFrameScores.get( frame + 1 );
 
         } else if ( isSpare(frame) ) {
@@ -103,8 +106,12 @@ public class Game {
             return false;
         }
 
-        return firstInFrameRolls.get(frame) +
-                secondInFrameRolls.get(frame) == 10;
+        if (firstInFrameRolls.get(frame) < 10 &&
+                firstInFrameRolls.get(frame) +
+                secondInFrameRolls.get(frame) == 10){
+            return true;
+        }
+        return false;
     }
 
 
