@@ -72,20 +72,20 @@ class BowlingGameTest extends Specification{
             game.score() == 300
     }
 
-    def "Does a strike followed by a spare followed by 4 pins score 38"(){
-        setup:
-        Game game = new Game()
-        game.roll(10)
-        game.roll(9)
-        game.roll(1)
-        game.roll(4)
-
-        16.times{
-            game.roll(0)
-        }
-        expect:
-        game.score() == 38
-    }
+//    def "Does a strike followed by a spare followed by 4 pins score 38"(){
+//        setup:
+//        Game game = new Game()
+//        game.roll(10)
+//        game.roll(9)
+//        game.roll(1)
+//        game.roll(4)
+//
+//        16.times{
+//            game.roll(0)
+//        }
+//        expect:
+//        game.score() == 38
+//    }
 
 //    def "Does an almost perfect game with 9 pins in final frame score 288?"() {
 //        setup:

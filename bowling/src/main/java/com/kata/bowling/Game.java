@@ -11,80 +11,87 @@ public class Game {
     private ArrayList<Integer> firstInFrameRolls = new ArrayList<Integer>();
     private ArrayList<Integer> secondInFrameRolls = new ArrayList<Integer>();
 
+    private ArrayList<Integer> calculatedFrameScores = null;
 
     public int score(){
 
-        Integer totalScore = rolls
+        initializeEmptyCalculatedFrameScores();
+
+        int indexOfLastFrame = firstInFrameRolls.size() - 1;
+
+        for ( int frame = indexOfLastFrame; frame >=0; frame --){
+
+            Integer frameScore = firstInFrameRolls.get( frame)
+                                + secondInFrameRolls.get(frame)
+                                + extraScoreForStrikesAndSpares(frame );
+
+            calculatedFrameScores.add(frame, frameScore);
+
+        }
+
+        Integer totalScore = calculatedFrameScores
                 .stream()
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        totalScore += extraScoreForStrikesAndSpares();
 
         return totalScore.intValue();
     }
 
-    private int extraScoreForStrikesAndSpares() {
-        int extraScore = 0;
-
-        for (int i = 0; i < secondInFrameRolls.size(); i++) {
-
-            if (isStrike(i) ){
-
-                extraScore += extraScoreForStrikeInFrame( i );
-
-            } else if ( isSpare(i) ) {
-
-                extraScore += extraScoreForSpareInFrame(i);
-            }
-        }
-        return extraScore;
+    private void initializeEmptyCalculatedFrameScores(){
+        calculatedFrameScores = new ArrayList<Integer>( firstInFrameRolls.size() );
+        firstInFrameRolls.forEach( (frame) -> calculatedFrameScores.add(0) );
     }
 
-    private int extraScoreForStrikeInFrame( int frame ){
-        int extra = 0;
+    private int extraScoreForStrikesAndSpares( int frame) {
+        int extraScore = 0;
 
-        if (firstInFrameRolls.size() > frame+1  &&
-                secondInFrameRolls.size() > frame+1 ) {
+        if (isStrike(frame) && isFrameCalculated(frame +1)){
+            extraScore += calculatedFrameScores.get( frame + 1 );
 
-            extra = (firstInFrameRolls.get(frame + 1) +
-                    secondInFrameRolls.get(frame + 1));
-
-            if (isStrike(frame + 1)) {
-                if (firstInFrameRolls.size() > frame + 2) {
-                    extra += firstInFrameRolls.get(frame + 2);
-                }
-                if (secondInFrameRolls.size() > frame + 2) {
-                    extra += secondInFrameRolls.get(frame + 2);
-                }
-            }
-            else {
-                if (isSpare(frame + 1)) {
-                    if (firstInFrameRolls.size() > frame + 2) {
-                        extra += firstInFrameRolls.get(frame + 2);
-                    }
-                }
-            }
+        } else if ( isSpare(frame) ) {
+            extraScore += extraScoreForSpareInFrame(frame);
         }
 
-        if (extra >10 ){
-            return 10;
+        if (extraScore >20){
+            return 20;
         }
-        return extra;
+        return extraScore;
     }
 
     private int extraScoreForSpareInFrame( int frame ) {
         int extra = 0;
 
-        if ( firstInFrameRolls.size() > frame + 1) {
+        if ( frameStarted( frame + 1 ) ) {
             extra = firstInFrameRolls.get(frame + 1);
         }
         return extra;
     }
 
+    private boolean frameCompleted( int frame){
+
+        if ( firstInFrameRolls.size() > frame && secondInFrameRolls.size() > frame ) {
+            return true;
+        }
+        return false;
+    }
+    private boolean frameStarted( int frame){
+        if (firstInFrameRolls.size() > frame ) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isFrameCalculated( int frame){
+        if (calculatedFrameScores == null ||
+               ! (calculatedFrameScores.size() > frame)) {
+            return false;
+        }
+        return true;
+    }
     private boolean isStrike( int frame){
 
-        if (!( firstInFrameRolls.size() > frame) ) {
+        if ( ! frameStarted( frame ) ) {
             return false;
         }
 
@@ -92,8 +99,7 @@ public class Game {
     }
     private boolean isSpare( int frame){
 
-        if (!( firstInFrameRolls.size() > frame) ||
-                !( secondInFrameRolls.size() > frame) ) {
+        if (! frameCompleted(frame) ) {
             return false;
         }
 
