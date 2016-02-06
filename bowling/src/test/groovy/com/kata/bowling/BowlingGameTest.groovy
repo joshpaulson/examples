@@ -88,6 +88,38 @@ class BowlingGameTest extends Specification{
         game.score() == 38
     }
 
+    def "Does three strikes then 9 pins then gutters score 87?"() {
+        setup:
+        Game game = new Game();
+        3.times{
+            game.roll(10)
+        }
+        game.roll(9)
+        game.roll(0)
+        16.times{
+            game.roll(0)
+        }
+
+        expect:
+        game.score() == 87
+    }
+
+    def "Does eight strikes then 9 pins then gutters score 237?"() {
+        setup:
+        Game game = new Game();
+        8.times{
+            game.roll(10)
+        }
+        game.roll(9)
+        game.roll(0)
+
+        game.roll(0)
+        game.roll(0)
+
+
+        expect:
+        game.score() == 237
+    }
 //    def "Does an almost perfect game with 9 pins in final frame score 288?"() {
 //        setup:
 //        Game game = new Game()
