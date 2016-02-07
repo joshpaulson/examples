@@ -13,6 +13,8 @@ public class Game {
 
     private ArrayList<Integer> calculatedFrameScores = null;
 
+    private static final int LAST_NORMAL_FRAME = 9;
+
     public int score(){
 
         initializeEmptyCalculatedFrameScores();
@@ -25,9 +27,11 @@ public class Game {
                                 + secondInFrameRolls.get(frame)
                                 + extraScoreForStrikesAndSpares(frame );
 
-            calculatedFrameScores.add(frame, frameScore);
+            calculatedFrameScores.set(frame, frameScore);
 
         }
+
+        removeScoresBeyondTheLastFrame();
 
         Integer totalScore = calculatedFrameScores
                 .stream()
@@ -36,6 +40,16 @@ public class Game {
 
 
         return totalScore.intValue();
+    }
+    private void removeScoresBeyondTheLastFrame() {
+
+        if (calculatedFrameScores.size() > 10) {
+            int roll = 10;
+            while (roll < calculatedFrameScores.size() ) {
+                calculatedFrameScores.set(roll, 0);
+                roll ++;
+            }
+        }
     }
 
     private void initializeEmptyCalculatedFrameScores(){

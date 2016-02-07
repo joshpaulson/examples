@@ -64,7 +64,7 @@ class BowlingGameTest extends Specification{
     def "Does a perfect game score 300?"() {
         setup:
             Game game = new Game()
-            11.times{
+            12.times{
                 game.roll(10)
             }
 
@@ -120,18 +120,31 @@ class BowlingGameTest extends Specification{
         expect:
         game.score() == 237
     }
-//    def "Does an almost perfect game with 9 pins in final frame score 288?"() {
-//        setup:
-//        Game game = new Game()
-//        10.times{
-//            game.roll(10)
-//        }
-//        game.roll(9)
-//        game.roll(0)
-//
-//        expect:
-//        game.score() == 288
-//    }
+
+    def "Does nine strikes then 9 pins then gutters score 267?"() {
+        setup:
+        Game game = new Game();
+        9.times{
+            game.roll(10)
+        }
+        game.roll(9)
+        game.roll(0)
+
+        expect:
+        game.score() == 267
+    }
+    def "Does an almost perfect game with 9 pins in final frame score 288?"() {
+        setup:
+        Game game = new Game()
+        10.times{
+            game.roll(10)
+        }
+        game.roll(9)
+        game.roll(0)
+
+        expect:
+        game.score() == 288
+    }
 
 
 }
