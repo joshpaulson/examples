@@ -1,11 +1,10 @@
 package com.kata.bowling;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
-/**
- * Created by user on 2/4/16.
- */
 public class Game {
+
     private ArrayList<Integer> rolls = new ArrayList<Integer>();
 
     private ArrayList<Integer> firstInFrameRolls = new ArrayList<Integer>();
@@ -13,23 +12,33 @@ public class Game {
 
     private ArrayList<Integer> calculatedFrameScores = null;
 
-    private static final int LAST_NORMAL_FRAME = 9;
+    private static final int NUMBER_OF_NORMAL_FRAMES = 10;
 
     public int score(){
 
         initializeEmptyCalculatedFrameScores();
 
-        int indexOfLastFrame = firstInFrameRolls.size() - 1;
+        ListIterator <Integer> calculatedFramesStartingAtTheLastOne =
+                calculatedFrameScores.listIterator( calculatedFrameScores.size() );
 
-        for ( int frame = indexOfLastFrame; frame >=0; frame --){
+        while( calculatedFramesStartingAtTheLastOne.hasPrevious() ) {
 
-            Integer frameScore = firstInFrameRolls.get( frame)
-                                + secondInFrameRolls.get(frame)
-                                + extraScoreForStrikesAndSpares(frame );
+            Integer frameIndex = calculatedFramesStartingAtTheLastOne.previousIndex();
+            calculatedFramesStartingAtTheLastOne.previous();
 
-            calculatedFrameScores.set(frame, frameScore);
+            Integer frameScore = firstInFrameRolls.get(frameIndex) ;
 
+            if( frameCompleted(frameIndex)) {
+                frameScore += secondInFrameRolls.get(frameIndex);
+            }
+
+            frameScore += extraScoreForStrikesAndSpares(frameIndex);
+
+            calculatedFrameScores.set( frameIndex, frameScore);
         }
+
+        System.out.println();
+
 
         removeScoresBeyondTheLastFrame();
 
@@ -43,11 +52,13 @@ public class Game {
     }
     private void removeScoresBeyondTheLastFrame() {
 
-        if (calculatedFrameScores.size() > 10) {
-            int roll = 10;
-            while (roll < calculatedFrameScores.size() ) {
-                calculatedFrameScores.set(roll, 0);
-                roll ++;
+        if (calculatedFrameScores.size() > NUMBER_OF_NORMAL_FRAMES) {
+
+            int frame = NUMBER_OF_NORMAL_FRAMES; // 10
+
+            while (frame < calculatedFrameScores.size() ) {
+                calculatedFrameScores.set(frame, 0);
+                frame ++;
             }
         }
     }
