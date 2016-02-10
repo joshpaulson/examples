@@ -1,7 +1,6 @@
 package com.kata.bowling;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 public class Game {
 
@@ -12,33 +11,21 @@ public class Game {
 
     private ArrayList<Integer> calculatedFrameScores = null;
 
+
     private static final int NUMBER_OF_NORMAL_FRAMES = 10;
 
     public int score(){
 
         initializeEmptyCalculatedFrameScores();
 
-        ListIterator <Integer> calculatedFramesStartingAtTheLastOne =
-                calculatedFrameScores.listIterator( calculatedFrameScores.size() );
+        for (int i=0; i <  calculatedFrameScores.size(); i++) {
 
-        while( calculatedFramesStartingAtTheLastOne.hasPrevious() ) {
+            int frameScore = firstInFrameRolls.get(i) +
+                             secondInFrameRolls.get(i) +
+                             extraScoreForStrikesAndSpares(i);
 
-            Integer frameIndex = calculatedFramesStartingAtTheLastOne.previousIndex();
-            calculatedFramesStartingAtTheLastOne.previous();
-
-            Integer frameScore = firstInFrameRolls.get(frameIndex) ;
-
-            if( frameCompleted(frameIndex)) {
-                frameScore += secondInFrameRolls.get(frameIndex);
-            }
-
-            frameScore += extraScoreForStrikesAndSpares(frameIndex);
-
-            calculatedFrameScores.set( frameIndex, frameScore);
+            calculatedFrameScores.set(i, frameScore);
         }
-
-        System.out.println();
-
 
         removeScoresBeyondTheLastFrame();
 
@@ -47,9 +34,56 @@ public class Game {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-
-        return totalScore.intValue();
+        return totalScore;
     }
+
+
+    private int extraScoreForStrikesAndSpares( int frame) {
+
+        int extraScore = 0;
+
+        if (isSpare( frame )  ){
+            extraScore = extraScoreForSpareInFrame(frame );
+        }
+
+        if (isStrike( frame ) && frameCompleted( frame +1) &&
+                !isStrike( frame +1) && !isSpare(frame +1)){
+
+            extraScore = firstInFrameRolls.get(frame+1) +
+                        secondInFrameRolls.get(frame+1);
+
+        }
+
+        if (isStrike( frame) && isSpare( frame +1) ){
+            extraScore = 10 ;
+        }
+
+        if (isStrike( frame ) && isStrike( frame+1 )
+                && frameCompleted( frame +2) && !isStrike(frame+2) && !isSpare(frame+2)){
+
+            extraScore = 10 + firstInFrameRolls.get( frame+2 ) +
+                              secondInFrameRolls.get( frame+2 );
+        }
+
+        if (isStrike( frame) && isStrike( frame+1) && isSpare( frame+2)){
+            extraScore = 10 + firstInFrameRolls.get( frame +2);
+        }
+
+        if (isStrike( frame) && isStrike( frame+1) && isStrike( frame+2)){
+            extraScore = 20;
+        }
+
+        return extraScore;
+    }
+    private int extraScoreForSpareInFrame( int frame ) {
+        int extra = 0;
+
+        if ( frameStarted( frame + 1 ) ) {
+            extra = firstInFrameRolls.get(frame + 1);
+        }
+        return extra;
+    }
+
     private void removeScoresBeyondTheLastFrame() {
 
         if (calculatedFrameScores.size() > NUMBER_OF_NORMAL_FRAMES) {
@@ -68,34 +102,6 @@ public class Game {
         firstInFrameRolls.forEach( (frame) -> calculatedFrameScores.add(0) );
     }
 
-    private int extraScoreForStrikesAndSpares( int frame) {
-        int extraScore = 0;
-
-        if (isStrike(frame) && isFrameCalculated(frame +1)){
-            if (isSpare( frame +1)){
-                return 10;
-            }
-            extraScore += calculatedFrameScores.get( frame + 1 );
-
-        } else if ( isSpare(frame) ) {
-            extraScore += extraScoreForSpareInFrame(frame);
-        }
-
-        if (extraScore >20){
-            return 20;
-        }
-        return extraScore;
-    }
-
-    private int extraScoreForSpareInFrame( int frame ) {
-        int extra = 0;
-
-        if ( frameStarted( frame + 1 ) ) {
-            extra = firstInFrameRolls.get(frame + 1);
-        }
-        return extra;
-    }
-
     private boolean frameCompleted( int frame){
 
         if ( firstInFrameRolls.size() > frame && secondInFrameRolls.size() > frame ) {
@@ -110,20 +116,14 @@ public class Game {
         return false;
     }
 
-    private boolean isFrameCalculated( int frame){
-        if (calculatedFrameScores == null ||
-               ! (calculatedFrameScores.size() > frame)) {
-            return false;
-        }
-        return true;
-    }
     private boolean isStrike( int frame){
 
-        if ( ! frameStarted( frame ) ) {
+        if ( ! frameCompleted( frame ) ) {
             return false;
         }
 
-        return firstInFrameRolls.get(frame) == 10;
+        return (firstInFrameRolls.get(frame) == 10 &&
+                secondInFrameRolls.get( frame) == 0);
     }
     private boolean isSpare( int frame){
 

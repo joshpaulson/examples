@@ -6,15 +6,6 @@ class BowlingGameTest extends Specification{
 
     def Game game = new Game()
 
-    def "Does Spock Work?"() {
-        expect:
-           name.size() == length
-
-        where:
-           name << ["joe", "john", "spock"]
-           length << [3,4,5]
-    }
-
     def "Does a Gutter Game Work?"() {
         setup:
             20.times {
@@ -69,7 +60,7 @@ class BowlingGameTest extends Specification{
             game.score() == 300
     }
 
-    def "Does a strike followed by a spare followed by 4 pins score 38"(){
+    def "Does a strike followed by a 9-1 spare followed by 4 pins score 38"(){
         setup:
         game.roll(10)
         game.roll(9)
@@ -138,6 +129,32 @@ class BowlingGameTest extends Specification{
         game.score() == 288
     }
 
+    def "Does a spare followed by a strike then 3 and 4 then gutters score 44?"() {
+        setup:
+        game.roll(9)
+        game.roll(1)
+
+        game.roll(10)
+
+        game.roll(3)
+        game.roll(4)
+
+        expect:
+        game.score() == 44
+    }
+
+    def "Does two strikes followed by a 5-5 spare, then 3 then gutters score 61?"(){
+        setup:
+        List gameRolls = [ 10, 10, 5,5, 3,0,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0]
+        gameRolls.each() { game.roll( it ) };
+
+        expect:
+            game.score() == 61
+
+
+
+    }
+
     def "Does the score calculate correctly for a bunch of games?"() {
         setup:
         gameRolls.each() { game.roll( it ) };
@@ -146,10 +163,48 @@ class BowlingGameTest extends Specification{
         game.score()  == result;
 
         where:
-        result << [10, 5, 6]
-        gameRolls << [[ 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0],
+        result << [ 300,10,   102,170,  200,200,  200,104,    77,162,   65,36,   90,60,  5,6]
+        gameRolls << [[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,   10, 10],
+                      [ 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0],
+
+                      [ 9,1, 7,1, 5,1, 4,1, 10,   7,1, 9,1, 10,   2,3,  0,0 ],
+                      [ 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 0,0],
+
+                      [ 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10],
+                      [ 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9],
+
+                      [ 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 1,9, 10, 10, 10],
+                      [ 5,1, 9,1, 10, 10, 9,1, 3,1, 0,0, 0,0, 5,1, 5,1], // 104
+
+                      [ 9,1, 10, 10, 1,9, 3,0,  0,0, 0,0, 0,0, 0,0, 0,0], // 79
+                      [ 9,1, 10, 10, 10, 5,5,  3,1, 10, 2,8, 10, 0,0], // 162
+
+
+                      [ 10, 10, 9,1, 3,0,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0], // 65
+                      [ 10, 9,1, 3,0,  0,0,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0], // 36
+
+                      [ 0,0, 0,0, 0,0, 0,0, 0,0, 0,0,  0,0,  10, 10, 10, 10, 10], //90
+                      [ 0,0, 0,0, 0,0, 0,0, 0,0, 0,0,  0,0,  10, 5,5, 10, 9, 1], //60
+
                       [ 4,0,1,0 ],
                       [ 4,0,2,0 ] ]
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
