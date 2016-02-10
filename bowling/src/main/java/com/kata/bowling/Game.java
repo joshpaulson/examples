@@ -41,40 +41,48 @@ public class Game {
     private int extraScoreForStrikesAndSpares( int frame) {
 
         int extraScore = 0;
+        int nextFrame = frame +1;
+        int afterNextFrame = frame +2;
 
+        // Zero Strikes
         if (isSpare( frame )  ){
             extraScore = extraScoreForSpareInFrame(frame );
         }
 
-        if (isStrike( frame ) && frameCompleted( frame +1) &&
-                !isStrike( frame +1) && !isSpare(frame +1)){
+        // One Strike
+        if (isStrike( frame ) ) {
 
-            extraScore = firstInFrameRolls.get(frame+1) +
-                        secondInFrameRolls.get(frame+1);
+            if (frameCompletedAndNotStrikeOrSpare( nextFrame )) {
 
+                extraScore = firstInFrameRolls.get( nextFrame ) +
+                        secondInFrameRolls.get( nextFrame );
+            }
+
+            if (isStrike(frame) && isSpare( nextFrame )) {
+                extraScore = 10;
+            }
         }
 
-        if (isStrike( frame) && isSpare( frame +1) ){
-            extraScore = 10 ;
-        }
+        // Two Strikes
+        if (isStrike( frame ) && isStrike( nextFrame ) ) {
 
-        if (isStrike( frame ) && isStrike( frame+1 )
-                && frameCompleted( frame +2) && !isStrike(frame+2) && !isSpare(frame+2)){
+            if (frameCompletedAndNotStrikeOrSpare( afterNextFrame )) {
+                extraScore = 10 + firstInFrameRolls.get( afterNextFrame ) +
+                        secondInFrameRolls.get( afterNextFrame );
+            }
 
-            extraScore = 10 + firstInFrameRolls.get( frame+2 ) +
-                              secondInFrameRolls.get( frame+2 );
-        }
+            if (isSpare( afterNextFrame )) {
+                extraScore = 10 + firstInFrameRolls.get( afterNextFrame );
+            }
 
-        if (isStrike( frame) && isStrike( frame+1) && isSpare( frame+2)){
-            extraScore = 10 + firstInFrameRolls.get( frame +2);
-        }
-
-        if (isStrike( frame) && isStrike( frame+1) && isStrike( frame+2)){
-            extraScore = 20;
+            if (isStrike( afterNextFrame )) {
+                extraScore = 20;
+            }
         }
 
         return extraScore;
     }
+
     private int extraScoreForSpareInFrame( int frame ) {
         int extra = 0;
 
@@ -100,6 +108,11 @@ public class Game {
     private void initializeEmptyCalculatedFrameScores(){
         calculatedFrameScores = new ArrayList<Integer>( firstInFrameRolls.size() );
         firstInFrameRolls.forEach( (frame) -> calculatedFrameScores.add(0) );
+    }
+
+    private boolean frameCompletedAndNotStrikeOrSpare( int frame ){
+        return frameCompleted( frame ) &&
+                !isStrike( frame ) && !isSpare(frame);
     }
 
     private boolean frameCompleted( int frame){
