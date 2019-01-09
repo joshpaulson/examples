@@ -21,7 +21,7 @@ describe 'bowling' do
   
   it "should return 16 as the score for a spare, followed by a three pin frame with no other pins in any frame" do
     game = Game.new()
-    
+
     game.roll(5)
     game.roll(5)
     game.roll(3)
@@ -30,6 +30,19 @@ describe 'bowling' do
       game.roll(0)
     }
     expect(game.score()).to eq 16
+  end
+
+  it "should return 24 as the score for a strike followed by 3 then 4, then no other pins in any frame" do
+    game = Game.new()
+    game.roll(10)
+    game.roll(3)
+    game.roll(4)
+
+    16.times{
+        game.roll(0)
+    }
+    expect(game.score()).to eq 24
+  
   end
 
 end
