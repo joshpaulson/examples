@@ -44,6 +44,17 @@ describe 'bowling' do
     expect(game.score()).to eq 24
   
   end
+  
+  it "should return 300 for a perfect game" do
+    game = Game.new()
+    
+    12.times{
+      game.roll(10)
+    }
+
+    expect(game.score()).to eq 300
+  end
+
 
 end
 
