@@ -114,6 +114,26 @@ describe 'bowling' do
     expect(@game.score()).to eq 288
   end
 
+  it "should return a score of 61 for two strikes followed by a 5-5 spare" do
+
+    gameRolls = [ 10, 10, 5,5, 3,0,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0]
+    
+    gameRolls.each do |it|
+      @game.roll( it )
+    end
+
+    expect(@game.score()).to eq 61
+  end
+
+  it "should return a score of 14+13=27 for a strike and a spare each followed by two single pin balls" do
+    gameRolls = [ 10, 1,1, 9,1, 1,1,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0]
+    
+    gameRolls.each do |it|
+      @game.roll( it )
+    end
+    expect(@game.score()).to eq 27
+  end  
+  
   # it "should return a score of 44 for a spare followed by a strike then 3 and 4" do
 
   #   @game.roll(9)
@@ -126,17 +146,6 @@ describe 'bowling' do
 
   #   expect(@game.score()).to eq 44
   # end
-
-  it "should return a score of 61 for two strikes followed by a 5-5 spare" do
-
-    gameRolls = [ 10, 10, 5,5, 3,0,  0,0,  0,0, 0,0, 0,0, 0,0, 0,0]
-    
-    gameRolls.each do |it|
-      @game.roll( it )
-    end
-
-    expect(@game.score()).to eq 61
-  end
 
 
 end
