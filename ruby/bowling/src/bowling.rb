@@ -46,7 +46,7 @@ class Game
       if( current_frame)
         current_frame_score = current_frame[0]+ current_frame[1]
         
-        if ( current_frame_score == 10)
+        if ( current_frame[0] == 10) # strike
           extra_score +=  score_of_next_frame
 
           if (first_ball_after_current_frame == 10)
@@ -54,6 +54,9 @@ class Game
             puts " extra,extra: #{ first_ball_after_next_frame }"
           end
           puts " extra: #{ extra_score } "
+
+        elsif ( current_frame_score == 10 ) # spare
+          extra_score += first_ball_after_current_frame  
         end
 
         score_of_next_frame = current_frame_score

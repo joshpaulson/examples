@@ -134,18 +134,18 @@ describe 'bowling' do
     expect(@game.score()).to eq 27
   end  
   
-  # it "should return a score of 44 for a spare followed by a strike then 3 and 4" do
+  it "should return a score of 44 for a spare followed by a strike then 3 and 4" do
 
-  #   @game.roll(9)
-  #   @game.roll(1)
+    @game.roll(9)
+    @game.roll(1)
 
-  #   @game.roll(10)
+    @game.roll(10)
 
-  #   @game.roll(3)
-  #   @game.roll(4)
+    @game.roll(3)
+    @game.roll(4)
 
-  #   expect(@game.score()).to eq 44
-  # end
+    expect(@game.score()).to eq 44
+  end
 
 
 end
