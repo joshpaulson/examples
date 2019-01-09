@@ -39,10 +39,10 @@ class Game
     extra_score = 0
     
     for index in (@frames.length - 1).downto(0) do
-      print " >#{index}" 
+      puts " >#{index}" 
       
       current_frame = @frames[index]
-      
+
       if( current_frame)
         current_frame_score = current_frame[0]+ current_frame[1]
         
@@ -51,9 +51,9 @@ class Game
 
           if (first_ball_after_current_frame == 10)
             extra_score += first_ball_after_next_frame
-            print " extra,extra: #{ first_ball_after_next_frame }"
+            puts " extra,extra: #{ first_ball_after_next_frame }"
           end
-          print " extra: #{ extra_score } "
+          puts " extra: #{ extra_score } "
         end
 
         score_of_next_frame = current_frame_score
@@ -62,7 +62,7 @@ class Game
         
       end  
     end
-    print "total_extra:#{ extra_score }"
+    puts "total_extra:#{ extra_score }"
     
     extra_score
   end  
@@ -80,7 +80,7 @@ class Game
     if @frames.length > 10
       for index in (@frames.length - 1).downto(10) do
         frame = @frames[index]
-        print " remove #{frame}"
+        puts " remove #{frame}"
 
         @current_score -= frame[0]
         @current_score -= frame[1]
@@ -92,7 +92,7 @@ class Game
 
   def score()
 
-    print " frames: #{@frames} length: #{ @frames.length } "
+    puts " frames: #{@frames} length: #{ @frames.length } "
 
     for frame in @frames do
       @current_score += frame[0]
@@ -102,7 +102,7 @@ class Game
     @current_score += extra_score_for_strikes_and_spares()
     remove_normal_score_for_extra_frames()
 
-    print " score:#{ @current_score }"    
+    puts " score:#{ @current_score }"    
     @current_score
   end  
   
