@@ -12,9 +12,17 @@ class Game
 
   def roll(number)
     
-    if (@first_ball_in_frame)
+    if (number == 10)
+      @current_frame[0] = 10
+      @current_frame[1] = 0
+      @frames << @current_frame
+      @current_frame = []
+      @first_ball_in_frame = true
+
+    elsif (@first_ball_in_frame)
       @current_frame[0] = number
       @first_ball_in_frame = false
+      
     else
       @current_frame[1] = number
       @frames << @current_frame
