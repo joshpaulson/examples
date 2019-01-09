@@ -7,7 +7,6 @@ class Game
     @frames = []
     @current_frame = []
     @first_ball_in_frame = true 
-    @current_frame_index = 0
   end
 
   def roll(number)
