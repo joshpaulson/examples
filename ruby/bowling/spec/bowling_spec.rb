@@ -54,6 +54,19 @@ describe 'bowling' do
     expect(@game.score()).to eq 300
   end
 
+  it "should return a score of 38 for a strike followed by a 9-1 spare followed by 4 pins" do
+    @game.roll(10)
+    @game.roll(9)
+    @game.roll(1)
+    @game.roll(4)
+    @game.roll(0)
+
+    14.times{
+        @game.roll(0)
+    }
+    expect(@game.score()).to eq 38
+  end
+
 
 end
 
